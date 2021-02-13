@@ -1042,12 +1042,7 @@ class CameraManager(object):
             display.blit(self.surface, (0, 0))
     def detect_signs(self,I):
         I = cv2.cvtColor(I, cv2.COLOR_RGB2BGR)
-        #X = np.size(I, 0)
-        #Y = np.size(I, 1)
         hsv = cv2.cvtColor(I, cv2.COLOR_BGR2HSV)
-        #h = hsv[:, :, 0]
-        #s = hsv[:, :, 1]
-        #v = hsv[:, :, 2]
         # Range for lower red
         lower_red = np.array([0, 120, 90])
         upper_red = np.array([15, 255, 255])
@@ -1063,7 +1058,6 @@ class CameraManager(object):
         try:
             circles = np.uint16(np.around(circles))
             for x,y,r in circles[0, :]:
-                #print(x,y,r)
                 r += 5
                 img = I[(y-r):(y+r),(x-r):(x+r)]
                 img = cv2.resize(img, (64,64), interpolation=cv2.INTER_AREA)
@@ -1073,11 +1067,9 @@ class CameraManager(object):
                 if(lp != 0):
                     cv2.circle(I, (x, y), r, (0, 255, 0), 2)
                     self.hud.notification('Detected sign: %d' % self.hud.sign)
-                #print(self.hud.sign)
-                
-        except:
+        except: 
+		 # No signs
             a=0
-            #print("nie ma znaków")
         I = cv2.cvtColor(I, cv2.COLOR_BGR2RGB)
         return I           
     @staticmethod
