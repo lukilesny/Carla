@@ -16,6 +16,8 @@ functions for calculate HOG written during labolatory classes in previous semest
 
 Code is available on branch signs_detect.
 
+![sign_detected](https://github.com/lukilesny/carla/blob/master/images/sign_detected.png)
+
 ## Lanes detection
 **carla\PythonAPI\examplesmanual_control_lanes.py** in detect_Lane
 1. Binarization lanes colour in HSV
@@ -26,6 +28,8 @@ Code is available on branch signs_detect.
 6. Check lane position on the screen and alert
 
 Code is *in process* on branch lanes_detect.
+
+![lane_detected](https://github.com/lukilesny/carla/blob/master/images/lane_detected.png)
 
 More about CARLA Simulator
 ===============
