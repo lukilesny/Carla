@@ -1,4 +1,33 @@
-CARLA Simulator
+# Carla_exercises
+
+## Signs detection
+**carla\PythonAPI\examples\manual_control_signs.py** in CameraManager/detect_signs
+1. Binarization red colour in HSV
+2. Hough to detect circles
+3. HOG of cropped imaages 
+3. Classification by SVM
+4. Notification
+
+**carla\PythonAPI\examples\clf.p**
+classifier learned on ~200 screens from carla
+
+**carla\PythonAPI\examples\HOG_functions.py**
+functions for calculate HOG written during labolatory classes in previous semester
+
+Code is available on branch signs_detect.
+
+## Lanes detection
+**carla\PythonAPI\examplesmanual_control_lanes.py** in detect_Lane
+1. Binarization lanes colour in HSV
+2. Morphological open
+3. Find countours
+4. Centers of detected object
+5. Calculate lane position
+6. Check lane position on the screen and alert
+
+Code is *in process* on branch lanes_detect.
+
+More about CARLA Simulator
 ===============
 
 [![Build Status](https://travis-ci.org/carla-simulator/carla.svg?branch=master)](https://travis-ci.org/carla-simulator/carla)
