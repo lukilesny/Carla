@@ -1090,16 +1090,12 @@ class DisplayManager:
 
 
 # ==============================================================================
-# -- DetectLane -------------------------------------------------------------
+# -- detectLane -------------------------------------------------------------
 # ==============================================================================   
 
-def DetectLane(image):
+def detectLane(image):
     copy = image.copy()
     image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    #(hMin = 24 , sMin = 99, vMin = 255), (hMax = 31 , sMax = 174, vMax = 255)
-    #(hMin = 22 , sMin = 76, vMin = 240), (hMax = 35 , sMax = 196, vMax = 255)
-    #(hMin = 20 , sMin = 78, vMin = 255), (hMax = 43 , sMax = 164, vMax = 255)
-    #(hMin = 18 , sMin = 90, vMin = 237), (hMax = 34 , sMax = 152, vMax = 255)
     lowerWhite1 = np.array([24,99,255])
     upperWhite1 = np.array([31,174,255])
     maskWhite1 = cv2.inRange(image, lowerWhite1, upperWhite1)
@@ -1118,28 +1114,20 @@ def DetectLane(image):
 
     kernel = np.ones((5,5),np.uint8)
     maskWhite1 = cv2.morphologyEx(maskWhite1, cv2.MORPH_OPEN, kernel)
-    #cv2.imshow('maskWhite', maskWhite)
     
     resultWhite1 = cv2.bitwise_and(copy, copy, mask=maskWhite1)
-    #cv2.imshow('resultWhite', resultWhite)
     
     maskWhite2 = cv2.morphologyEx(maskWhite2, cv2.MORPH_OPEN, kernel)
-    #cv2.imshow('maskWhite', maskWhite)
     
     resultWhite2 = cv2.bitwise_and(copy, copy, mask=maskWhite2)
-    #cv2.imshow('resultWhite', resultWhite)
     
     maskWhite3 = cv2.morphologyEx(maskWhite3, cv2.MORPH_OPEN, kernel)
-    #cv2.imshow('maskWhite', maskWhite)
     
     resultWhite3 = cv2.bitwise_and(copy, copy, mask=maskWhite3)
-    #cv2.imshow('resultWhite', resultWhite)
     
     maskWhite4 = cv2.morphologyEx(maskWhite4, cv2.MORPH_OPEN, kernel)
-    #cv2.imshow('maskWhite', maskWhite)
     
     resultWhite4 = cv2.bitwise_and(copy, copy, mask=maskWhite4)
-    #cv2.imshow('resultWhite', resultWhite)
     
     cntsW1 = cv2.findContours(maskWhite1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cntsW1 = cntsW1[0] if len(cntsW1) == 2 else cntsW1[1]
@@ -1164,7 +1152,6 @@ def DetectLane(image):
         area = cv2.contourArea(c)
         if area > 0:
             cv2.drawContours(copy, cntsW1, -1, (255, 0, 0), 5) 
-            #cv2.putText(copy, 'pasy',(1280-300, 100),  cv2.FONT_HERSHEY_SIMPLEX, 3, (255,0,0) ,3)
             M = cv2.moments(c)
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
@@ -1175,7 +1162,6 @@ def DetectLane(image):
         area = cv2.contourArea(c)
         if area > 0:
             cv2.drawContours(copy, cntsW2, -1, (255, 0, 0), 5) 
-            #cv2.putText(copy, 'pasy',(1280-300, 100),  cv2.FONT_HERSHEY_SIMPLEX, 3, (255,0,0) ,3)
             M = cv2.moments(c)
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
@@ -1186,7 +1172,6 @@ def DetectLane(image):
         area = cv2.contourArea(c)
         if area > 0:
             cv2.drawContours(copy, cntsW3, -1, (255, 0, 0), 5) 
-            #cv2.putText(copy, 'pasy',(1280-300, 100),  cv2.FONT_HERSHEY_SIMPLEX, 3, (255,0,0) ,3)
             M = cv2.moments(c)
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
@@ -1197,7 +1182,6 @@ def DetectLane(image):
         area = cv2.contourArea(c)
         if area > 0:
             cv2.drawContours(copy, cntsW4, -1, (255, 0, 0), 5) 
-            #cv2.putText(copy, 'pasy',(1280-300, 100),  cv2.FONT_HERSHEY_SIMPLEX, 3, (255,0,0) ,3)
             M = cv2.moments(c)
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
@@ -1205,22 +1189,20 @@ def DetectLane(image):
 
     centers = centers1 + centers2 + centers3 + centers4
     centers = list(dict.fromkeys(centers))
-   # centers.sort(key = )
     
     print(centers)
     
     end_point = (0, 0)
     start_point = (0, 0)
     
-    if(len(centers) >=2 and (centers[0][0] != centers[1][0])):# and (centers[0][1] != centers[1][1])):
+    if(len(centers) >=2 and (centers[0][0] != centers[1][0])):
         start_point = centers[0]
         end_point = centers[1]
-    #print(start_point, end_point)
 
         
     rise = end_point[1]-start_point[1]
     run = end_point[0]-start_point[0]
-    #print(rise, run)
+
     
     height, width, channels = copy.shape
     x1 = start_point[0]
@@ -1232,7 +1214,6 @@ def DetectLane(image):
         y1 = y1 - rise
         x2 = x2 + run
         y2 = y2 + rise 
-        #print(x1,y1)
         
     copy = cv2.line(copy, (x1,y1), (x2, y2), (0, 0, 255), 2)
     
@@ -1367,6 +1348,6 @@ def main():
 
 if __name__ == '__main__':
 
-    display = DisplayManager(name='DisplayManager', interval=0.1, size=30, on_update = lambda img:  DetectLane(img))  
+    display = DisplayManager(name='DisplayManager', interval=0.1, size=30, on_update = lambda img:  detectLane(img))  
     main()
     display.finish()
